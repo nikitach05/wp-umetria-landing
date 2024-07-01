@@ -1,0 +1,14 @@
+{
+  "get_field": {
+    "prefix": "gf",
+    "body": [
+      "get_field('$0')",
+    ]
+  },
+  "php_tag": {
+    "prefix": "<?=",
+    "body": [
+      "<?= $0 ?>",
+    ]
+  }
+}
