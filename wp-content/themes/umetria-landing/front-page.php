@@ -66,49 +66,63 @@
 	</div>
 </main>
 
+<?
+    $data = get_field('braces');
+?>
+<? if (!empty($data) && $data['show']): ?>
 <section class="braces p-indent">
 	<div class="container">
 		<div class="braces__title s-title s-title--center">
-			<h2>Создаю красивые улыбки и&nbsp;исправляю любой прикус</h2>
+			<h2><?= $data['title'] ?></h2>
 		</div>
+
+        <? if (!empty($data['list'])): ?>
 		<ul class="braces__head">
-			<li class="braces__head-item">Улучшает эстетические параметры лица</li>
-			<li class="braces__head-item">Выравнивает зубы по правильному смыканию</li>
-			<li class="braces__head-item">Восстанавливает функциональный прикус</li>
+            <? foreach ($data['list'] as $li): ?>
+			<li class="braces__head-item"><?= $li['text'] ?></li>
+            <? endforeach ?>
 		</ul>
+        <? endif ?>
 
 		<div class="braces__items">
 			<div class="braces__item">
 				<div class="braces__img-box">
+                    <? if (!empty($data['pl-1'])): ?>
 					<div class="braces__pl-1 pl-text">
-						<img src="<?=PATH_THEME?>img/e-serp.webp" loading="lazy" alt="Heart" width="43" height="43">
-						<span>Брекеты - это модно</span>
+                        <?= wp_get_attachment_image($data['pl-1']['icon'], 'full', false, ['loading' => 'lazy']); ?>
+						<span><?= $data['pl-1']['text'] ?></span>
 					</div>
-					<img class="braces__img img1" src="<?=PATH_THEME?>img/photo1.webp" loading="lazy" alt="" width="466" height="578">
+                    <? endif ?>
+                    <?= wp_get_attachment_image($data['photo-1'], 'large', false, ['class' => 'braces__img img1', 'loading' => 'lazy']); ?>
 				</div>
 			</div>
 			<div class="braces__item">
 				<div class="braces__img-box">
-					<img class="braces__img img2" src="<?=PATH_THEME?>img/photo2.webp" loading="lazy" alt="" width="594" height="743">
+					<?= wp_get_attachment_image($data['photo-2'], 'large', false, ['class' => 'braces__img img2', 'loading' => 'lazy']); ?>
 				</div>
 			</div>
 			<div class="braces__item">
 				<div class="braces__img-box">
+                    <? if (!empty($data['pl-3'])): ?>
 					<div class="braces__pl-3 pl-text">
-						<img src="<?=PATH_THEME?>img/e-bant.webp" loading="lazy" alt="Heart" width="44" height="43">
-						<span>Брекеты - это красиво</span>
+                        <?= wp_get_attachment_image($data['pl-3']['icon'], 'full', false, ['loading' => 'lazy']); ?>
+						<span><?= $data['pl-3']['text'] ?></span>
 					</div>
-					<img class="braces__img img3" src="<?=PATH_THEME?>img/photo3.webp" loading="lazy" alt="" width="466" height="556">
+                    <? endif ?>
+					<?= wp_get_attachment_image($data['photo-3'], 'large', false, ['class' => 'braces__img img3', 'loading' => 'lazy']); ?>
 				</div>
 			</div>
 		</div>
-
-		<div class="braces__pl-2 pl-text">
-			<img src="<?=PATH_THEME?>img/e-heart.webp" loading="lazy" alt="Heart" width="41" height="41">
-			<span>Брекеты - это здоровье</span>
-		</div>
+        
+        <? if (!empty($data['pl-2'])): ?>
+        <div class="braces__pl-2 pl-text">
+            <?= wp_get_attachment_image($data['pl-2']['icon'], 'full', false, ['loading' => 'lazy']); ?>
+            <span><?= $data['pl-2']['text'] ?></span>
+        </div>
+        <? endif ?>
 	</div>
 </section>
+<? endif ?>
 
 <section class="our-works m-indent">
 	<div class="our-works__inner">
