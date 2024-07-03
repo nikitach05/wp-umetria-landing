@@ -124,33 +124,46 @@
 </section>
 <? endif ?>
 
+<?
+    $data = get_field('works');
+?>
+<? if (!empty($data) && $data['show']): ?>
 <section class="our-works m-indent">
 	<div class="our-works__inner">
 		<div class="container">
 			
 			<div class="our-works__head">
+
+                <? if (!empty($data['under-title'])): ?>
 				<div class="our-works__under-title under-title">
 					<div class="under-title__icon">
-						<img src="<?=PATH_THEME?>img/e-book.webp" loading="lazy" alt="" width="45" height="46">
+                        <?= wp_get_attachment_image($data['under-title']['icon'], 'full', false, ['class' => 'small-img', 'loading' => 'lazy']); ?>
 					</div>
-					<span>Мои результаты</span>
+					<span><?= $data['under-title']['text'] ?></span>
 				</div>
+                <? endif ?>
 				
 				<div class="our-works__title s-title s-title--center">
-					<h2>Примеры ортодонтического лечения на японских брекет-системах</h2>
+					<h2><?= $data['title'] ?></h2>
 				</div>
 			</div>
 
 			<div class="our-works__slider our-works-slider">
+                <? if (count($data['items']) > 1): ?>
 				<div class="swiper-arrows-prev">
 					<svg><use href="<?=PATH_THEME?>img/sprites/sprite.svg#arrow"></use></svg>
 				</div>
 				<div class="swiper-arrows-next">
 					<svg><use href="<?=PATH_THEME?>img/sprites/sprite.svg#arrow"></use></svg>
 				</div>
+                <? endif ?>
+                
 				<div class="swiper our-works-slider__items">
 					<div class="swiper-wrapper">
 						
+                        <? if (!empty($data['items'])): ?>
+                        <? $i=0; ?>
+                        <? foreach ($data['items'] as $item): ?>
 						<div class="swiper-slide our-works-slider__item">
 							
 							<div class="our-works-slider__row">
@@ -161,16 +174,15 @@
 											<div class="our-works-slider__term-icon-box">
 												<img class="our-works-slider__term-icon" src="<?=PATH_THEME?>img/e-note.webp" loading="lazy" alt="" width="46" height="46">
 											</div>
-											<div class="our-works-slider__term-txt">Срок лечения : 17 месяцев</div>
+											<div class="our-works-slider__term-txt">Срок лечения : <?= $item['term'] ?></div>
 										</div>
-										<img class="our-works-slider__img" src="<?=PATH_THEME?>img/photo4.webp" loading="lazy" alt="" width="661" height="577">
+                                        <?= wp_get_attachment_image($item['photo'], 'large', false, ['class' => 'our-works-slider__img', 'loading' => 'lazy']); ?>
 										<div class="swiper-lazy-preloader"></div>
 									</div>
 
 									<div class="our-works-slider__text">
-										<div class="our-works-slider__title">Причины обращения</div>
-										<div class="our-works-slider__desc">Пациентка хотела улучшить эстетическую функцию, но главное условия без обточки эмали и чтобы зубы были естественные,
-										выглядили натурально.</div>
+										<div class="our-works-slider__title"><?= $item['title'] ?></div>
+										<div class="our-works-slider__desc"><?= $item['text'] ?></div>
 									</div>
 									
 								</div>
@@ -179,16 +191,19 @@
 									<div class="our-works-slider__compare">
 										<div class="our-works-slider__compare-before">
 											<div class="our-works-slider__compare-pl">До</div>
-											<img class="our-works-slider__compare-img" src="<?=PATH_THEME?>img/photo5.webp" loading="lazy" alt="" width="676" height="334">
+                                            <?= wp_get_attachment_image($item['photo-before'], 'large', false, ['class' => 'our-works-slider__compare-img', 'loading' => 'lazy']); ?>
 										</div>
 										<div class="our-works-slider__compare-after">
 											<div class="our-works-slider__compare-pl primary">После</div>
-											<img class="our-works-slider__compare-img" src="<?=PATH_THEME?>img/photo6.webp" loading="lazy" alt="" width="676" height="334">
+                                            <?= wp_get_attachment_image($item['photo-after'], 'large', false, ['class' => 'our-works-slider__compare-img', 'loading' => 'lazy']); ?>
 										</div>
 									</div>
 
 									<div class="our-works-slider__bottom">
-										<div class="our-works-slider__btn btn btn--primary" data-modal="modal-work-1">Подробнее</div>
+
+                                        <? if (!empty($item['modal']['show'])): ?>
+										<div class="our-works-slider__btn btn btn--primary" data-modal="modal-work-<?= $i ?>">Подробнее</div>
+                                        <? endif ?>
 
 										<a class="our-works-slider__whatsapp" target="_blank" href="https://wa.me/+74952481815">
 											<span class="our-works-slider__whatsapp-txt">Написать в WhatsApp</span>
@@ -200,106 +215,9 @@
 								</div>
 							</div>
 						</div>
-						
-						<div class="swiper-slide our-works-slider__item">
-							
-							<div class="our-works-slider__row">
-
-								<div class="our-works-slider__column">
-									<div class="our-works-slider__img-box">
-										<div class="our-works-slider__term">
-											<div class="our-works-slider__term-icon-box">
-												<img class="our-works-slider__term-icon" src="<?=PATH_THEME?>img/e-note.webp" loading="lazy" alt="" width="46" height="46">
-											</div>
-											<div class="our-works-slider__term-txt">Срок лечения : 17 месяцев</div>
-										</div>
-										<img class="our-works-slider__img" src="<?=PATH_THEME?>img/photo4.webp" loading="lazy" alt="" width="661" height="577">
-										<div class="swiper-lazy-preloader"></div>
-									</div>
-
-									<div class="our-works-slider__text">
-										<div class="our-works-slider__title">Причины обращения</div>
-										<div class="our-works-slider__desc">Пациентка хотела улучшить эстетическую функцию, но главное условия без обточки эмали и чтобы зубы были естественные,
-										выглядили натурально.</div>
-									</div>
-									
-								</div>
-
-								<div class="our-works-slider__column">
-									<div class="our-works-slider__compare">
-										<div class="our-works-slider__compare-before">
-											<div class="our-works-slider__compare-pl">До</div>
-											<img class="our-works-slider__compare-img" src="<?=PATH_THEME?>img/photo5.webp" loading="lazy" alt="" width="676" height="334">
-										</div>
-										<div class="our-works-slider__compare-after">
-											<div class="our-works-slider__compare-pl primary">После</div>
-											<img class="our-works-slider__compare-img" src="<?=PATH_THEME?>img/photo6.webp" loading="lazy" alt="" width="676" height="334">
-										</div>
-									</div>
-
-									<div class="our-works-slider__bottom">
-										<div class="our-works-slider__btn btn btn--primary" data-modal="modal-work-1">Подробнее</div>
-
-										<a class="our-works-slider__whatsapp" target="_blank" href="https://wa.me/+74952481815">
-											<span class="our-works-slider__whatsapp-txt">Написать в WhatsApp</span>
-											<span class="our-works-slider__whatsapp-icon">
-												<svg><use href="<?=PATH_THEME?>img/sprites/sprite.svg#whatsapp"></use></svg>
-											</span>
-										</a>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-						<div class="swiper-slide our-works-slider__item">
-							
-							<div class="our-works-slider__row">
-
-								<div class="our-works-slider__column">
-									<div class="our-works-slider__img-box">
-										<div class="our-works-slider__term">
-											<div class="our-works-slider__term-icon-box">
-												<img class="our-works-slider__term-icon" src="<?=PATH_THEME?>img/e-note.webp" loading="lazy" alt="" width="46" height="46">
-											</div>
-											<div class="our-works-slider__term-txt">Срок лечения : 17 месяцев</div>
-										</div>
-										<img class="our-works-slider__img" src="<?=PATH_THEME?>img/photo4.webp" loading="lazy" alt="" width="661" height="577">
-										<div class="swiper-lazy-preloader"></div>
-									</div>
-
-									<div class="our-works-slider__text">
-										<div class="our-works-slider__title">Причины обращения</div>
-										<div class="our-works-slider__desc">Пациентка хотела улучшить эстетическую функцию, но главное условия без обточки эмали и чтобы зубы были естественные,
-										выглядили натурально.</div>
-									</div>
-									
-								</div>
-
-								<div class="our-works-slider__column">
-									<div class="our-works-slider__compare">
-										<div class="our-works-slider__compare-before">
-											<div class="our-works-slider__compare-pl">До</div>
-											<img class="our-works-slider__compare-img" src="<?=PATH_THEME?>img/photo5.webp" loading="lazy" alt="" width="676" height="334">
-										</div>
-										<div class="our-works-slider__compare-after">
-											<div class="our-works-slider__compare-pl primary">После</div>
-											<img class="our-works-slider__compare-img" src="<?=PATH_THEME?>img/photo6.webp" loading="lazy" alt="" width="676" height="334">
-										</div>
-									</div>
-
-									<div class="our-works-slider__bottom">
-										<div class="our-works-slider__btn btn btn--primary" data-modal="modal-work-1">Подробнее</div>
-
-										<a class="our-works-slider__whatsapp" target="_blank" href="https://wa.me/+74952481815">
-											<span class="our-works-slider__whatsapp-txt">Написать в WhatsApp</span>
-											<span class="our-works-slider__whatsapp-icon">
-												<svg><use href="<?=PATH_THEME?>img/sprites/sprite.svg#whatsapp"></use></svg>
-											</span>
-										</a>
-									</div>
-								</div>
-							</div>
-						</div>
+                        <? $i++ ?>
+                        <? endforeach ?>
+                        <? endif ?>
 						
 					</div>
 				</div>
@@ -312,7 +230,11 @@
 		</div>
 	</div>
 
-	<div class="modal modal-work" id="modal-work-1">
+    <? if (!empty($data['items'])): ?>
+    <? $i=0; ?>
+    <? foreach ($data['items'] as $item): ?>
+    <? $modal = $item['modal'] ?>
+	<div class="modal modal-work" id="modal-work-<?= $i ?>">
 		<div class="modal__wrapper">
 			<div class="modal__close" data-modal-close="">
 				<svg><use href="<?=PATH_THEME?>img/sprites/sprite.svg#cross"></use></svg>
@@ -321,96 +243,112 @@
 
 				<div class="modal-work__results">
 					<div class="modal-work__results-column">
+
+                        <? if (!empty($modal['photo'])): ?>
 						<div class="modal-work__results-img-box">
 							<div class="modal-work__pl primary">Результат</div>
-							<img class="modal-work__results-img" src="<?=PATH_THEME?>img/photo7.webp" loading="lazy" alt="" width="566" height="636">
+                            <?= wp_get_attachment_image($modal['photo'], 'large', false, ['class' => 'modal-work__results-img', 'loading' => 'lazy']); ?>
 						</div>
+                        <? endif ?>
+
 						<div class="modal-work__termbox">
 							<div class="modal-work__subtitle">Срок лечения:</div>
-							<div class="modal-work__text">24 месяца 6 мини винтов и дуги МПД/MEAW (многопетлевая дуга) к брекет-системе</div>
+							<div class="modal-work__text"><?= $modal['term'] ?></div>
 						</div>
 					</div>
 					<div class="modal-work__results-column">
 						<div class="modal-work__head" data-move-el="[{'bp-max': 768, 'index': 0, 'target': '#modal-work-1 .modal-work__results'}]">
-							<div class="modal-work__under-title under-title">
-								<div class="under-title__icon">
-									<img src="<?=PATH_THEME?>img/e-book.webp" loading="lazy" alt="" width="45" height="46">
-								</div>
-								<span>Мои результаты</span>
-							</div>
+
+                            <? if (!empty($data['under-title'])): ?>
+                            <div class="our-works__under-title under-title">
+                                <div class="under-title__icon">
+                                    <?= wp_get_attachment_image($data['under-title']['icon'], 'full', false, ['class' => 'small-img', 'loading' => 'lazy']); ?>
+                                </div>
+                                <span><?= $data['under-title']['text'] ?></span>
+                            </div>
+                            <? endif ?>
 							
 							<div class="modal-work__title s-title">
-								<h2>Исправление перекрестного прикуса</h2>
+								<h2><?= $modal['title'] ?></h2>
 							</div>
 						</div>
-
+                        
+                        <? if (!empty($modal['infoblocks'])): ?>
+                        <? foreach ($modal['infoblocks'] as $infoblock): ?>
 						<div class="modal-work__infobox">
-							<div class="modal-work__subtitle">Причины обращения</div>
-							<div class="modal-work__text">Эстетическая жалоба, не ровные передние зубы и не правильный прикус. Ранее консультировалась в разных клиниках и у разных специалистов - рекомендация ТОЛЬКО ортогнатическая хирургия. Обошлись без операции, решила задачу японской брекет-системой</div>
+							<div class="modal-work__subtitle"><?= $infoblock['title'] ?></div>
+							<div class="modal-work__text"><?= $infoblock['text'] ?></div>
 						</div>
-
-						<div class="modal-work__infobox">
-							<div class="modal-work__subtitle">Что было сделано</div>
-							<ul>
-								<li>Гармонизация нижней трети лица за счет ротации нижней челюсти против часовой стрелки (авторотации нижней челюсти)</li>
-								<li>Улучшение профиля лица за счет уменьшение нижней трети лица</li>
-								<li>По прикусу устранено скучное положение зубов, правильное соотношения по клыкам и молярам и закрытие открытого прикуса (нормализация перекрытия во фронтальном отделе)</li>
-							</ul>
-						</div>
+                        <? endforeach ?>
+                        <? endif ?>
+                        
 					</div>
 				</div>
-
+                
+                <? if (!empty($modal['process-show'])): ?>
 				<div class="modal-work__process">
 					<div class="modal-work__title s-title s-title--center">
 						<h2>Процесс лечения</h2>
 					</div>
 
 					<div class="modal-work__process-head">
+                        <? if (!empty($modal['photo-before'])): ?>
 						<div class="modal-work__process-before">
 							<div class="modal-work__pl">До</div>
-							<img class="modal-work__process-before-img" src="<?=PATH_THEME?>img/photo8.webp" loading="lazy" alt="" width="423" height="580">
+                            <?= wp_get_attachment_image($modal['photo-before'], 'large', false, ['class' => 'modal-work__process-before-img', 'loading' => 'lazy']); ?>
 						</div>
-						<div class="modal-work__process-compare">
-							<div class="modal-work__subtitle">Cравнение z - угла</div>
-							<img class="modal-work__process-compare-img modal-work__has-img-mob" src="<?=PATH_THEME?>img/photo9.webp" loading="lazy" alt="" width="1091" height="528">
-							<img class="modal-work__process-compare-img modal-work__img-mob" src="<?=PATH_THEME?>img/photo9-mob.webp" loading="lazy" alt="" width="384" height="1020">
-						</div>
-					</div>
+                        <? endif ?>
 
-					<div class="modal-work__process-item">
-						<div class="modal-work__subtitle">Внутриротовая фотография до и после лечения</div>
-						<img class="modal-work__process-item-img" src="<?=PATH_THEME?>img/photo10.webp" loading="lazy" alt="" width="1592" height="775">
-					</div>
+                        <? foreach ($modal['process'] as $el): ?>
+                        <div class="modal-work__process-compare">
+                            <div class="modal-work__subtitle"><?= $el['title'] ?></div>
 
-					<div class="modal-work__process-item">
-						<div class="modal-work__subtitle">Цефалометрический анализ ДО и ПОСЛЕ лечения</div>
-						<img class="modal-work__process-item-img modal-work__has-img-mob" src="<?=PATH_THEME?>img/photo11.webp" loading="lazy" alt="" width="1592" height="728">
-						<img class="modal-work__process-compare-img modal-work__img-mob" src="<?=PATH_THEME?>img/photo11-mob.webp" loading="lazy" alt="" width="384" height="960">
+                            <?
+                                $has_mob_img = !empty($el['photo-mob']);
+                                $has_mob_img_class = $has_mob_img ? 'modal-work__has-img-mob' : '';
+                            ?>
+                            
+                            <?= wp_get_attachment_image($el['photo'], 'large', false, ['class' => 'modal-work__process-compare-img' . ' ' . $has_mob_img_class, 'loading' => 'lazy']); ?>
+                            <? if ($has_mob_img): ?>
+                                <?= wp_get_attachment_image($el['photo-mob'], 'large', false, ['class' => 'modal-work__process-compare-img modal-work__img-mob', 'loading' => 'lazy']); ?>
+                            <? endif ?>
+                        </div>
+                        <? break ?>
+                        <? endforeach ?>
+                        
 					</div>
+                    
+                    <? $i=0; ?>
+                    <? foreach ($modal['process'] as $el): ?>
+                    <? $i++ ?>
+                    <? if ($i == 1) continue ?>
+					<div class="modal-work__process-item">
+						<div class="modal-work__subtitle"><?= $el['title'] ?></div>
 
-					<div class="modal-work__process-item">
-						<div class="modal-work__subtitle">Интразональные фото в середине процесса</div>
-						<img class="modal-work__process-item-img modal-work__has-img-mob" src="<?=PATH_THEME?>img/photo12.webp" loading="lazy" alt="" width="1592" height="383">
-						<img class="modal-work__process-compare-img modal-work__img-mob" src="<?=PATH_THEME?>img/photo12-mob.webp" loading="lazy" alt="" width="384" height="927">
+                        <?
+                            $has_mob_img = !empty($el['photo-mob']);
+                            $has_mob_img_class = $has_mob_img ? 'modal-work__has-img-mob' : '';
+                        ?>
+                        
+                        <?= wp_get_attachment_image($el['photo'], 'large', false, ['class' => 'modal-work__process-item-img' . ' ' . $has_mob_img_class, 'loading' => 'lazy']); ?>
+                        <? if ($has_mob_img): ?>
+                            <?= wp_get_attachment_image($el['photo-mob'], 'large', false, ['class' => 'modal-work__process-item-img modal-work__img-mob', 'loading' => 'lazy']); ?>
+                        <? endif ?>
 					</div>
+                    <? endforeach ?>
 
-					<div class="modal-work__process-item">
-						<div class="modal-work__subtitle">Наложение цеф</div>
-						<img class="modal-work__process-item-img" src="<?=PATH_THEME?>img/photo13.webp" loading="lazy" alt="" width="1590" height="1016">
-					</div>
-
-					<div class="modal-work__process-item">
-						<div class="modal-work__subtitle">Фото профиля лица до и после лечения</div>
-						<img class="modal-work__process-item-img modal-work__has-img-mob" src="<?=PATH_THEME?>img/photo14.webp" loading="lazy" alt="" width="1564" height="979">
-						<img class="modal-work__process-compare-img modal-work__img-mob" src="<?=PATH_THEME?>img/photo14-mob.webp" loading="lazy" alt="" width="384" height="989">
-					</div>
 				</div>
+                <? endif ?>
 
 			</div>
 		</div>
 	</div>
+    <? $i++ ?>
+    <? endforeach ?>
+    <? endif ?>
 	
 </section>
+<? endif ?>
 
 <section class="quiz-section m-indent-2x">
 	<div class="quiz-section__inner">
