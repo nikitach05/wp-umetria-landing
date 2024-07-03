@@ -713,7 +713,7 @@
 									<div class="quiz__policy checkbox-field">
 										<input type="checkbox" name="policy" checked="" class="checkbox-field__input required">
 										<div class="checkbox-field__box active"></div>
-										<div class="checkbox-field__label">Я соглашаюсь на обработку персональных данных согласно <a href="#" target="_blank">политике конфиденциальности</a></div>
+										<div class="checkbox-field__label">Я соглашаюсь на обработку персональных данных согласно <a href="https://policies.google.com/privacy" target="_blank">политике конфиденциальности</a></div>
 									</div>
 								</div>
 							</div>
@@ -750,7 +750,7 @@
 							<input type="tel" name="phone" class="input required" placeholder="+7 (___) ___-__-__">
 							<button type="submit" class="konsult-form__submit btn send-form btn--black">Записаться на консультацию</button>
 
-							<div class="konsult-form__policy">Нажимая на кнопку, вы соглашаетесь на обработку <a href="" target="_blank">персональных данных</a></div>
+							<div class="konsult-form__policy">Нажимая на кнопку, вы соглашаетесь на обработку <a href="https://policies.google.com/privacy" target="_blank">персональных данных</a></div>
 						</form>
 					</div>
 
