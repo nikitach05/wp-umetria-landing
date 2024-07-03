@@ -35,7 +35,7 @@
                         <input type="tel" name="phone" class="input required" id="order-form__phone" placeholder="Введите ваш телефон">
                     </div>
                     <button class="order-form__submit send-form btn btn--primary">Жду звонка</button>
-                    <div class="order-form__policy">Нажимая на кнопку, вы соглашаетесь на обработку <a href="" target="_blank">персональных&nbsp;данных</a></div>
+                    <div class="order-form__policy">Нажимая на кнопку, вы соглашаетесь на обработку <a href="https://policies.google.com/privacy" target="_blank">персональных&nbsp;данных</a></div>
                 </form>
             </div>
 
