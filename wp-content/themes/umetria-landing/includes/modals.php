@@ -23,6 +23,8 @@
                 <div class="modal-order__subtitle">Закажите звонок, и мы перезвоним вам через 9 секунд!</div>
 
                 <form class="modal-order__form order-form">
+                    <input type="hidden" name="form" value="Обратный звонок">
+                    
                     <div class="order-form__title">Звонок бесплатный</div>
                     <div class="form-field">
                         <label for="order-form__name">Имя</label>

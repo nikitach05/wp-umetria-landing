@@ -1,5 +1,13 @@
 <?php
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+// Load Composer's autoloader
+require '/OpenServer/domains/umetria-landing/vendor/autoload.php';
+// require '/var/www/www-root/data/www/xn-----7kcbeuaaea0a4ad4ad5cxb5cwa.xn--p1ai/vendor/autoload.php';
+
 remove_action('wp_head', 'rsd_link');
 remove_action('wp_head', 'wlwmanifest_link');
 remove_action('wp_head', 'wp_generator');
@@ -22,81 +30,59 @@ if (function_exists('add_theme_support')) {
 add_theme_support('menus');
 }
 
-// add_action( 'init', 'tpl_jobs' );
-// function tpl_jobs() {
-//     register_post_type( 'jobs', array(
-//         'labels' => array(
-//             'name' => 'Вакансии',
-//             'all_items' => 'Все',
-//             'add_new' => 'Добавить',
-//             'add_new_item' => 'Добавление'
-//             ),
-//         'public' => true,
-//         'show_in_nav_menus' => true,
-//         'show_in_menu' => true,
-//         'supports' => array( 'title', 'custom-fields', 'revisions' ),
-//         )
-//     );
-// };
-
 add_action( 'wp_ajax_send_form', 'send_form' );
 add_action( 'wp_ajax_nopriv_send_form', 'send_form' );
 function send_form() {
 
-    $phone = isset($_POST["phone"]) ? $_POST["phone"] : '';
-    $email = isset($_POST["email"]) ? $_POST["email"] : '';
-    
+  // PHPMailer options
+  $mail = new PHPMailer(true);
 
-    $from = get_field('email_from', 'options');
-    $to = get_field('email_to', 'options');
+  $mail->CharSet = 'UTF-8';
 
-    $subject = "Заявка с Prime Top";
+  $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+  $mail->isSMTP();
+  $mail->SMTPAuth = true;
+  $mail->SMTPDebug = 0;
 
-    $body = "";
+  $mail->Host = 'ssl://smtp.mail.ru';
+  $mail->Username = 'info@umetria.ru';
+  $mail->Password = 'FStT0svuqTfgbjaKmpQ6';
+  $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;  
+  $mail->Port = 465;
 
-    if (empty($email) && empty($phone)) {
-      return false;
-    }
+  // Form data
+  $form = isset($_POST["form"]) ? $_POST["form"] : '';
+  $name = isset($_POST["name"]) ? $_POST["name"] : '';
+  $phone = isset($_POST["phone"]) ? $_POST["phone"] : '';
 
-    if (!empty($phone)) {
-      $body .= "Телефон: " . $phone . "<br>";
-    }
+  $mail->setFrom('info@umetria.ru', 'umetria.ru');
+  // $mail->addAddress('info@umetria.ru', 'Umetria');
+  // $mail->addAddress('kolyan45495@gmail.com', 'Umetria');
+  $mail->addAddress('nikitach05@yandex.ru', 'Umetria');
 
-    $attachment = chunk_split(base64_encode(file_get_contents($_FILES['fileFF']['tmp_name'])));
-    $filename = $_FILES['fileFF']['name'];
-    $filetype = $_FILES['fileFF']['type'];
+  $mail->isHTML(true);
+  $subject = $form;
+  $mail->Subject = $subject;
 
-    $boundary = md5(date('r', time()));
+  $body = "";
 
-    $headers = "From: " . $from . "\r\n";
-    $headers .= "Reply-To: " . $from . "\r\n";
-    $headers .= "MIME-Version: 1.0\r\n";
-    $headers .= "Content-Type: multipart/mixed; boundary=\"_1_$boundary\"";
+  if (!empty($name)) {
+    $body .= "Имя: " . $name . "<br>";
+  }
 
-    $message="
-    --_1_$boundary
-    Content-Type: multipart/alternative; boundary=\"_2_$boundary\"
+  if (!empty($phone)) {
+    $body .= "Телефон: " . $phone . "<br>";
+  }
 
-    --_2_$boundary
-    Content-Type: text/html; charset=\"utf-8\"
-    Content-Transfer-Encoding: 7bit
+  $mail->Body = $body;
 
-    $body
+  try {
+    $mail->send();
+    echo 'ok';
+  } catch (Exception $e) {
+    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+  }
 
-    --_2_$boundary--
-    --_1_$boundary
-    Content-Type: \"$filetype\"; name=\"$filename\"
-    Content-Transfer-Encoding: base64
-    Content-Disposition: attachment
-
-    $attachment
-    --_1_$boundary--";
-
-    if (is_string($to)) {
-        if (mail($to, $subject, $message, $headers)) {
-            echo 'ok';
-        }
-    }
 }
 
 // allow SVG uploads

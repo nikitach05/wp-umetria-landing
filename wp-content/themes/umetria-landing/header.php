@@ -36,6 +36,9 @@
 				</div>
 			</div>
 
+			<?
+				$contacts = get_field('contacts', 10);
+			?>
 			<div class="header__center">
 				<div class="header__contacts" data-move-el="[{'bp-max': 992, 'index': 1, 'target': '.header__mobile-menu'}]">
 					<div class="header__contacts-item">
@@ -43,8 +46,8 @@
 							<svg><use href="<?=PATH_THEME?>img/sprites/sprite.svg#loc"></use></svg>
 						</div>
 						<div class="header__contacts-text">
-							<div class="header__contacts-text-large" data-contacts-text-1=""><span>БЦ “Станколит”</span></div>
-							<div class="header__contacts-text-small">Складочная ул., 1, стр. 1, подъезд&nbsp;11</div>
+							<div class="header__contacts-text-large" data-contacts-text-1=""><span><?= $contacts['address']['text-1'] ?></span></div>
+							<div class="header__contacts-text-small"><?= $contacts['address']['text-2'] ?></div>
 						</div>
 					</div>
 					<div class="header__contacts-item">
@@ -52,8 +55,8 @@
 							<svg><use href="<?=PATH_THEME?>img/sprites/sprite.svg#phone"></use></svg>
 						</div>
 						<div class="header__contacts-text">
-							<a class="header__contacts-text-large" data-contacts-text-2="" href="tel:+74952481815"><span>+7 (495) 248 18 15</span></a>
-							<div class="header__contacts-text-small">Ежедневно с 10:00 до 21:00</div>
+							<a class="header__contacts-text-large" data-contacts-text-2="" href="tel:<?= $contacts['phone'] ?>"><span><?= $contacts['phone'] ?></span></a>
+							<div class="header__contacts-text-small"><?= $contacts['time-work'] ?></div>
 						</div>
 					</div>
 				</div>
@@ -61,26 +64,38 @@
 
 			<div class="header__right">
 				<div class="header__circles">
-					<a class="header__circles-item" target="_blank" href="">
+
+					<? if (!empty($contacts['telegram'])): ?>
+					<a class="header__circles-item" target="_blank" href="<?= $contacts['telegram'] ?>">
 						<svg><use href="<?=PATH_THEME?>img/sprites/sprite.svg#telegram"></use></svg>
 					</a>
-					<a class="header__circles-item" target="_blank" href="">
+					<? endif ?>
+
+					<? if (!empty($contacts['whatsapp'])): ?>
+					<a class="header__circles-item" target="_blank" href="<?= $contacts['whatsapp'] ?>">
 						<svg class="whatsapp"><use href="<?=PATH_THEME?>img/sprites/sprite.svg#whatsapp"></use></svg>
 					</a>
+					<? endif ?>
 				</div>
 				<div class="header__btn btn btn--primary" data-modal="modal-order" data-move-el="[{'bp-max': 992, 'index': 2, 'target': '.header__mobile-menu'}]">Записаться</div>
 			</div>
 
 			<div class="header__mobile-menu">
 				<div class="header__messangers" data-move-el="[{'bp-max': 992, 'index': 3, 'target': '.header__mobile-menu'}]">
-					<a href="" target="_blank" class="header__messangers-item">
+					<? if (!empty($contacts['whatsapp'])): ?>
+					<a href="<?= $contacts['whatsapp'] ?>" target="_blank" class="header__messangers-item">
 						<span class="header__messangers-txt">Написать в WhatsApp</span>
 						<svg><use href="<?=PATH_THEME?>img/sprites/sprite.svg#whatsapp"></use></svg>
 					</a>
-					<a href="" target="_blank" class="header__messangers-item">
+					<? endif ?>
+
+					<? if (!empty($contacts['telegram'])): ?>
+					<a href="<?= $contacts['telegram'] ?>" target="_blank" class="header__messangers-item">
 						<span class="header__messangers-txt">Написать в Telegram</span>
 						<svg><use href="<?=PATH_THEME?>img/sprites/sprite.svg#telegram"></use></svg>
 					</a>
+					<? endif ?>
+
 				</div>
 			</div>
 		</div>

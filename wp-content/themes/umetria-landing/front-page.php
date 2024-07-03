@@ -20,6 +20,7 @@
 				<div class="main__text"><?= $data['text'] ?></div>
 
 				<form class="main__form">
+                    <input type="hidden" name="form" value="Получить расчет">
 					<div class="main__form-title"><?= $data['form-title'] ?></div>
 					<div class="form-field">
 						<input type="text" class="input required" name="name" placeholder="Введите ваше имя">
@@ -350,20 +351,26 @@
 </section>
 <? endif ?>
 
+<?
+    $data = get_field('quiz');
+?>
+<? if (!empty($data) && $data['show']): ?>
 <section class="quiz-section m-indent-2x">
 	<div class="quiz-section__inner">
 		<div class="container">
 
 			<div class="quiz-section__head">
+                <? if (!empty($data['under-title'])): ?>
 				<div class="quiz-section__under-title under-title">
 					<div class="under-title__icon">
-						<img src="<?=PATH_THEME?>img/e-book.webp" loading="lazy" alt="" width="45" height="46">
+                        <?= wp_get_attachment_image($data['under-title']['icon'], 'full', false, ['class' => 'small-img', 'loading' => 'lazy']); ?>
 					</div>
-					<span>Квиз</span>
+					<span><?= $data['under-title']['text'] ?></span>
 				</div>
+                <? endif ?>
 			
 				<div class="quiz-section__title s-title s-title--center">
-					<h2>Создаю красивые улыбки для пациентов с любым типом прикуса</h2>
+					<h2><?= $data['title'] ?></h2>
 				</div>
 			</div>
 
@@ -723,19 +730,23 @@
 					</form>
 
 					<div class="quiz__konsult-form konsult-form">
+
+                        <? if (!empty($data['doctor'])): ?>
 						<div class="konsult-form__doctor">
-							<img class="konsult-form__doctor-img" src="<?=PATH_THEME?>img/doctor.webp" loading="lazy" alt="" width="258" height="241">
+                            <?= wp_get_attachment_image($data['doctor']['photo'], 'large', false, ['class' => 'konsult-form__doctor-img', 'loading' => 'lazy']); ?>
 							<div class="konsult-form__doctor-cnt">
-								<div class="konsult-form__doctor-post">Врач - ортодонт</div>
-								<div class="konsult-form__doctor-name">Евсеева Кристина Юрьевна</div>
-								<div class="konsult-form__doctor-desc">Эксперт по работе с брекет-системами без&nbsp;прописи, без программирования (индивидуальная методика, без шаблонов)</div>
+								<div class="konsult-form__doctor-post"><?= $data['doctor']['post'] ?></div>
+								<div class="konsult-form__doctor-name"><?= $data['doctor']['name'] ?></div>
+								<div class="konsult-form__doctor-desc"><?= $data['doctor']['desc'] ?></div>
 							</div>
 						</div>
+                        <? endif ?>
 
 						<form class="konsult-form__form">
 							<div class="konsult-form__title">Понадобилась консультация ?</div>
 							<div class="konsult-form__subtitle">Введите номер телефона и мы перезвоним в течение 9 минут</div>
 
+                            <input type="hidden" name="form" value="Консультация">
 							<input type="tel" name="phone" class="input required" placeholder="+7 (___) ___-__-__">
 							<button type="submit" class="konsult-form__submit btn send-form btn--black">Записаться на консультацию</button>
 
@@ -750,5 +761,6 @@
 		</div>
 	</div>
 </section>
+<? endif ?>
 
 <?php get_footer(); ?>
