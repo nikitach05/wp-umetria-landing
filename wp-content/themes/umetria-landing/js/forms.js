@@ -26,6 +26,8 @@ async function sendForm(formData) {
 		const modals = document.querySelectorAll('.modal');
         modals.forEach(modal => modal.classList.remove('modal--opened'));
 
+		ym(97788233,'reachGoal','submit');
+
 		document.querySelector('#modal-success').classList.add('modal--opened');
 		
 		document.querySelectorAll('input[type="text"], input[type="tel"]').forEach(input => input.value = '');
