@@ -203,7 +203,7 @@
 									<div class="our-works-slider__bottom">
 
                                         <? if (!empty($item['modal']['show'])): ?>
-										<div class="our-works-slider__btn btn btn--primary" data-modal="modal-work-<?= $i ?>">Подробнее</div>
+										<div class="our-works-slider__btn btn btn--primary" data-modal="modal-order-2">Узнать цену</div>
                                         <? endif ?>
 
 										<a class="our-works-slider__whatsapp" target="_blank" href="https://wa.me/+74952481815">
@@ -450,27 +450,27 @@
 
 								<div class="quiz__options">
 									<div class="quiz__option quiz__option--v1 active">
-										<img class="quiz__option-img" src="<?=PATH_THEME?>img/pricus1.webp" loading="lazy" alt="" width="128" height="91">
+										<img class="quiz__option-img" src="<?=PATH_THEME?>img/svg/pricus1.svg" loading="lazy" alt="" width="128" height="91">
 										<div class="quiz__option-value">Открытый прикус, зубы плохо смыкаются спереди</div>
 									</div>
 									<div class="quiz__option quiz__option--v1">
-										<img class="quiz__option-img" src="<?=PATH_THEME?>img/pricus2.webp" loading="lazy" alt="" width="128" height="91">
+										<img class="quiz__option-img" src="<?=PATH_THEME?>img/svg/pricus2.svg" loading="lazy" alt="" width="128" height="91">
 										<div class="quiz__option-value">Перекрестный <br>прикус</div>
 									</div>
 									<div class="quiz__option quiz__option--v1">
-										<img class="quiz__option-img" src="<?=PATH_THEME?>img/pricus3.webp" loading="lazy" alt="" width="128" height="90">
+										<img class="quiz__option-img" src="<?=PATH_THEME?>img/svg/pricus3.svg" loading="lazy" alt="" width="128" height="90">
 										<div class="quiz__option-value">Скученность, зубы слишком плотно расположены</div>
 									</div>
 									<div class="quiz__option quiz__option--v1">
-										<img class="quiz__option-img" src="<?=PATH_THEME?>img/pricus4.webp" loading="lazy" alt="" width="128" height="90">
+										<img class="quiz__option-img" src="<?=PATH_THEME?>img/svg/pricus4.svg" loading="lazy" alt="" width="128" height="90">
 										<div class="quiz__option-value">Промежутки между зубами</div>
 									</div>
 									<div class="quiz__option quiz__option--v1">
-										<img class="quiz__option-img" src="<?=PATH_THEME?>img/pricus5.webp" loading="lazy" alt="" width="128" height="90">
+										<img class="quiz__option-img" src="<?=PATH_THEME?>img/svg/pricus5.svg" loading="lazy" alt="" width="128" height="90">
 										<div class="quiz__option-value">Глубокий, верхний ряд слишком выступает вперед</div>
 									</div>
 									<div class="quiz__option quiz__option--v1">
-										<img class="quiz__option-img" src="<?=PATH_THEME?>img/pricus6.webp" loading="lazy" alt="" width="128" height="90">
+										<img class="quiz__option-img" src="<?=PATH_THEME?>img/svg/pricus6.svg" loading="lazy" alt="" width="128" height="90">
 										<div class="quiz__option-value">Обратный, нижний ряд впереди верхнего</div>
 									</div>
 
