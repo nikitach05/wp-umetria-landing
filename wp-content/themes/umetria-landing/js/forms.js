@@ -66,6 +66,8 @@ async function sendQuizForm(formData) {
 			finishQuizItem.classList.add('active');
 		}
 		
+		ym(97788233,'reachGoal','submit');
+		
 		document.querySelectorAll('input[type="text"], input[type="tel"]').forEach(input => input.value = '');
 	}
 }
