@@ -20,6 +20,7 @@
 				<div class="main__text"><?= $data['text'] ?></div>
 
 				<form class="main__form">
+					<input type="hidden" name="recaptchaResponse" class="recaptcha-response">
                     <input type="hidden" name="form" value="Получить расчет">
 					<div class="main__form-title"><?= $data['form-title'] ?></div>
 					<div class="form-field">
@@ -400,47 +401,17 @@
 					<div class="quiz__progress-item">
 						<div class="quiz__progress-step">8</div>
 					</div>
-					<div class="quiz__progress-item">
-						<div class="quiz__progress-step">9</div>
-					</div>
 				</div>
 
 				<div class="quiz__inner">
 
 					<form class="quiz__form" enctype="multipart/form-data">
 
+						<input type="hidden" name="recaptchaResponse" class="recaptcha-response">
+
 						<div class="quiz__form-item active" data-block="1">
 
-							<div class="quiz__wrapper">
-								<div class="quiz__head">
-									<div class="quiz__label">Узнайте за 1 минуту предварительное решение, подходит ли вам Star Smile?</div>
-									<div class="quiz__title">Для кого подбираете лечение ?</div>
-								</div>
-
-								<div class="quiz__options quiz__options--v1">
-									<div class="quiz__option active">
-										<div class="quiz__option-value">Ребенок от 6 до 13 лет</div>
-									</div>
-									<div class="quiz__option">
-										<div class="quiz__option-value">Подросток с 14 до 17 лет</div>
-									</div>
-									<div class="quiz__option">
-										<div class="quiz__option-value">Взрослый</div>
-									</div>
-
-									<input type="hidden" name="quiz-step-1" value="Ребенок от 6 до 13 лет">
-								</div>
-							</div>
-
-							<div class="quiz__bottom  quiz__bottom--v1">
-								<div class="quiz__next quiz__tab btn btn--primary" data-tab="2">Далее</div>
-								<div class="quiz__step-nav"><strong>Шаг</strong> <span class="quiz__step-number">1</span> из 9</div>
-							</div>
-						</div>
-
-						<div class="quiz__form-item" data-block="2">
-
-							<div class="quiz__step-nav"><strong>Шаг</strong> 2 из 9</div>
+							<div class="quiz__step-nav"><strong>Шаг</strong> 1 из 8</div>
 
 							<div class="quiz__wrapper">
 								<div class="quiz__head">
@@ -479,18 +450,14 @@
 							</div>
 
 							<div class="quiz__bottom">
-								<div class="quiz__back quiz__tab" data-tab="1">
-									<svg><use href="<?=PATH_THEME?>img/sprites/sprite.svg#arrow-back"></use></svg>
-									<span>Назад</span>
-								</div>
-								<div class="quiz__next quiz__tab btn btn--primary" data-tab="3">Далее</div>
-								<div class="quiz__step-nav"><strong>Шаг</strong> <span class="quiz__step-number">2</span> из 9</div>
+								<div class="quiz__next quiz__tab btn btn--primary" data-tab="2">Далее</div>
+								<div class="quiz__step-nav"><strong>Шаг</strong> <span class="quiz__step-number">1</span> из 8</div>
 							</div>
 						</div>
 
-						<div class="quiz__form-item" data-block="3">
+						<div class="quiz__form-item" data-block="2">
 
-							<div class="quiz__step-nav"><strong>Шаг</strong> 3 из 9</div>
+							<div class="quiz__step-nav"><strong>Шаг</strong> 2 из 8</div>
 
 							<div class="quiz__wrapper">
 								<div class="quiz__head">
@@ -514,18 +481,18 @@
 							</div>
 						
 							<div class="quiz__bottom">
-								<div class="quiz__back quiz__tab" data-tab="2">
+								<div class="quiz__back quiz__tab" data-tab="1">
 									<svg><use href="<?=PATH_THEME?>img/sprites/sprite.svg#arrow-back"></use></svg>
 									<span>Назад</span>
 								</div>
-								<div class="quiz__next quiz__tab btn btn--primary" data-tab="4">Далее</div>
-								<div class="quiz__step-nav"><strong>Шаг</strong> <span class="quiz__step-number">3</span> из 9</div>
+								<div class="quiz__next quiz__tab btn btn--primary" data-tab="3">Далее</div>
+								<div class="quiz__step-nav"><strong>Шаг</strong> <span class="quiz__step-number">2</span> из 8</div>
 							</div>
 						</div>
 
-						<div class="quiz__form-item" data-block="4">
+						<div class="quiz__form-item" data-block="3">
 
-							<div class="quiz__step-nav"><strong>Шаг</strong> 4 из 9</div>
+							<div class="quiz__step-nav"><strong>Шаг</strong> 3 из 8</div>
 
 							<div class="quiz__wrapper">
 								<div class="quiz__head">
@@ -546,18 +513,18 @@
 							</div>
 						
 							<div class="quiz__bottom">
-								<div class="quiz__back quiz__tab" data-tab="3">
+								<div class="quiz__back quiz__tab" data-tab="2">
 									<svg><use href="<?=PATH_THEME?>img/sprites/sprite.svg#arrow-back"></use></svg>
 									<span>Назад</span>
 								</div>
-								<div class="quiz__next quiz__tab btn btn--primary" data-tab="5">Далее</div>
-								<div class="quiz__step-nav"><strong>Шаг</strong> 4 из 9</div>
+								<div class="quiz__next quiz__tab btn btn--primary" data-tab="4">Далее</div>
+								<div class="quiz__step-nav"><strong>Шаг</strong> 3 из 8</div>
 							</div>
 						</div>
 
-						<div class="quiz__form-item" data-block="5">
+						<div class="quiz__form-item" data-block="4">
 
-							<div class="quiz__step-nav"><strong>Шаг</strong> 5 из 9</div>
+							<div class="quiz__step-nav"><strong>Шаг</strong> 4 из 8</div>
 
 							<div class="quiz__wrapper">
 								<div class="quiz__head">
@@ -581,18 +548,18 @@
 							</div>
 						
 							<div class="quiz__bottom">
-								<div class="quiz__back quiz__tab" data-tab="4">
+								<div class="quiz__back quiz__tab" data-tab="3">
 									<svg><use href="<?=PATH_THEME?>img/sprites/sprite.svg#arrow-back"></use></svg>
 									<span>Назад</span>
 								</div>
-								<div class="quiz__next quiz__tab btn btn--primary" data-tab="6">Далее</div>
-								<div class="quiz__step-nav"><strong>Шаг</strong> 5 из 9</div>
+								<div class="quiz__next quiz__tab btn btn--primary" data-tab="5">Далее</div>
+								<div class="quiz__step-nav"><strong>Шаг</strong> 4 из 8</div>
 							</div>
 						</div>
 
-						<div class="quiz__form-item" data-block="6">
+						<div class="quiz__form-item" data-block="5">
 
-							<div class="quiz__step-nav"><strong>Шаг</strong> 6 из 9</div>
+							<div class="quiz__step-nav"><strong>Шаг</strong> 5 из 8</div>
 
 							<div class="quiz__wrapper">
 								<div class="quiz__head">
@@ -622,18 +589,18 @@
 							</div>
 						
 							<div class="quiz__bottom">
-								<div class="quiz__back quiz__tab" data-tab="5">
+								<div class="quiz__back quiz__tab" data-tab="4">
 									<svg><use href="<?=PATH_THEME?>img/sprites/sprite.svg#arrow-back"></use></svg>
 									<span>Назад</span>
 								</div>
-								<div class="quiz__next quiz__tab btn btn--primary" data-tab="7">Далее</div>
-								<div class="quiz__step-nav"><strong>Шаг</strong> 6 из 9</div>
+								<div class="quiz__next quiz__tab btn btn--primary" data-tab="6">Далее</div>
+								<div class="quiz__step-nav"><strong>Шаг</strong> 5 из 8</div>
 							</div>
 						</div>
 
-						<div class="quiz__form-item" data-block="7">
+						<div class="quiz__form-item" data-block="6">
 
-							<div class="quiz__step-nav"><strong>Шаг</strong> 7 из 9</div>
+							<div class="quiz__step-nav"><strong>Шаг</strong> 6 из 8</div>
 
 							<div class="quiz__wrapper">
 								<div class="quiz__head">
@@ -655,18 +622,18 @@
 							</div>
 						
 							<div class="quiz__bottom">
-								<div class="quiz__back quiz__tab" data-tab="6">
+								<div class="quiz__back quiz__tab" data-tab="5">
 									<svg><use href="<?=PATH_THEME?>img/sprites/sprite.svg#arrow-back"></use></svg>
 									<span>Назад</span>
 								</div>
-								<div class="quiz__next quiz__tab btn btn--primary" data-tab="8">Далее</div>
-								<div class="quiz__step-nav"><strong>Шаг</strong> 7 из 9</div>
+								<div class="quiz__next quiz__tab btn btn--primary" data-tab="7">Далее</div>
+								<div class="quiz__step-nav"><strong>Шаг</strong> 6 из 8</div>
 							</div>
 						</div>
 
-						<div class="quiz__form-item" data-block="8">
+						<div class="quiz__form-item" data-block="7">
 
-							<div class="quiz__step-nav"><strong>Шаг</strong> 8 из 9</div>
+							<div class="quiz__step-nav"><strong>Шаг</strong> 7 из 8</div>
 
 							<div class="quiz__wrapper">
 								<div class="quiz__head">
@@ -681,16 +648,16 @@
 							</div>
 						
 							<div class="quiz__bottom">
-								<div class="quiz__back quiz__tab" data-tab="7">
+								<div class="quiz__back quiz__tab" data-tab="6">
 									<svg><use href="<?=PATH_THEME?>img/sprites/sprite.svg#arrow-back"></use></svg>
 									<span>Назад</span>
 								</div>
-								<div class="quiz__next quiz__tab btn btn--primary" data-tab="9">Далее</div>
-								<div class="quiz__step-nav"><strong>Шаг</strong> 8 из 9</div>
+								<div class="quiz__next quiz__tab btn btn--primary" data-tab="8">Далее</div>
+								<div class="quiz__step-nav"><strong>Шаг</strong> 7 из 8</div>
 							</div>
 						</div>
 
-						<div class="quiz__form-item" data-block="9">
+						<div class="quiz__form-item" data-block="8">
 
 							<div class="quiz__wrapper quiz__finish-step">
 								<div class="quiz__head">
@@ -743,6 +710,7 @@
                         <? endif ?>
 
 						<form class="konsult-form__form">
+							<input type="hidden" name="recaptchaResponse" class="recaptcha-response">
 							<div class="konsult-form__title">Понадобилась консультация ?</div>
 							<div class="konsult-form__subtitle">Введите номер телефона и мы перезвоним в течение 9 минут</div>
 

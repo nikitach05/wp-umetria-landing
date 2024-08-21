@@ -60,11 +60,7 @@ function send_form() {
   $phone = isset($_POST["phone"]) ? $_POST["phone"] : '';
 
   $mail_from = get_field('mail-from', 'options');
-  $mail_to = get_field('mail-to', 'options');
   $mail->setFrom($mail_from, 'Лечение на брекетах');
-  foreach ($mail_to as $item) {
-    $mail->addAddress($item['mail'], $item['mail']);
-  }
 
   $mail->isHTML(true);
   $subject = $form;
@@ -82,64 +78,93 @@ function send_form() {
 
   $mail->Body = $body;
 
-  try {
-    $mail->send();
-    echo 'ok';
-	
-	/* send calltouch */
-	try {
-		$ct_site_id = '68946'; // ID сайта Calltouch
-		$call_value = $_COOKIE['_ct_session_id'];
-		if (isset($_POST['call_value'])) {
-			$call_value = $_POST['call_value'];
-		}
-		$ct_data = array(
-			'subject'       =>   $subject,
-			'fio'           =>   $name,
-			'phoneNumber'   =>   $phone,
-			'requestUrl'    =>   $_SERVER['HTTP_REFERER'],
-			'sessionId'     =>   $call_value
-		);
-		$ct_data_str = http_build_query($ct_data);
-		 
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, "https://api.calltouch.ru/calls-service/RestAPI/requests/$ct_site_id/register/");
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: application/x-www-form-urlencoded;charset=utf-8"));
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $ct_data_str);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		$calltouch = curl_exec($ch);
-		 
-		// Проверка на ошибку выполнения запроса
-		if (curl_errno($ch)) {
-			throw new Exception(curl_error($ch));
-		}
-		 
-		// Получение HTTP-кода ответа
-		$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		if ($http_code != 200) {
-			throw new Exception("HTTP response code: " . $http_code . ". Response: " . $calltouch);
-		}
-	 
-		curl_close($ch);
-	 
-		// Логируем успешный запрос
-		$log_message = "\n \n" . "request " . date("Y.m.d H:i") . "\n";
-		$log_message .= "Data sent: " . $ct_data_str . "\n";
-		$log_message .= "Response: " . $calltouch . "\n";
-		//file_put_contents(__DIR__ . '/calltouch_log.txt', $log_message, FILE_APPEND | LOCK_EX);
-	 
-	} catch (Exception $e) {
-		// Логируем ошибку
-		$log_message = "\n \n" . "request " . date("Y.m.d H:i") . "\n";
-		$log_message .= "Data sent: " . $ct_data_str . "\n";
-		$log_message .= "Error: " . $e->getMessage() . "\n";
-		file_put_contents(__DIR__ . '/calltouch_error_log.txt', $log_message, FILE_APPEND | LOCK_EX);
-	}
-	/* send calltouch */
-	
-  } catch (Exception $e) {
-    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+  // reCAPTCHA
+  $secretKey = '6LfTDSwqAAAAANVoCeGWaUIWrlr7xooEjCtBvjAj';
+  $token = $_POST['recaptchaResponse'];
+  $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$token");
+  $responseKeys = json_decode($response, true);
+  $score = $responseKeys["score"];
+
+  // Если потенциальный бот то отправляем на отдельный email без calltouch
+  if (intval($responseKeys["success"]) !== 1 && $score < 0.5) {
+      $mail->addAddress('nikitach05@yandex.ru', 'nikitach05@yandex.ru');
+      $mail->addAddress('kolyan45495@gmail.com', 'kolyan45495@gmail.com');
+
+      try {
+        $mail->send();
+        echo 'ok';
+      } catch (Exception $e) {
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+      }
+      
+      return;
+  } else {
+
+    $mail_to = get_field('mail-to', 'options');
+    foreach ($mail_to as $item) {
+      $mail->addAddress($item['mail'], $item['mail']);
+    }
+
+    try {
+      $mail->send();
+      echo 'ok';
+    
+    /* send calltouch */
+    try {
+      $ct_site_id = '68946'; // ID сайта Calltouch
+      $call_value = $_COOKIE['_ct_session_id'];
+      if (isset($_POST['call_value'])) {
+        $call_value = $_POST['call_value'];
+      }
+      $ct_data = array(
+        'subject'       =>   $subject,
+        'fio'           =>   $name,
+        'phoneNumber'   =>   $phone,
+        'tags'			=>	 'лечение-на-брекетах.рф',
+        'requestUrl'    =>   $_SERVER['HTTP_REFERER'],
+        'sessionId'     =>   $call_value
+      );
+      $ct_data_str = http_build_query($ct_data);
+      
+      $ch = curl_init();
+      curl_setopt($ch, CURLOPT_URL, "https://api.calltouch.ru/calls-service/RestAPI/requests/$ct_site_id/register/");
+      curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: application/x-www-form-urlencoded;charset=utf-8"));
+      curl_setopt($ch, CURLOPT_POST, 1);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $ct_data_str);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      $calltouch = curl_exec($ch);
+      
+      // Проверка на ошибку выполнения запроса
+      if (curl_errno($ch)) {
+        throw new Exception(curl_error($ch));
+      }
+      
+      // Получение HTTP-кода ответа
+      $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+      if ($http_code != 200) {
+        throw new Exception("HTTP response code: " . $http_code . ". Response: " . $calltouch);
+      }
+    
+      curl_close($ch);
+    
+      // Логируем успешный запрос
+      $log_message = "\n \n" . "request " . date("Y.m.d H:i") . "\n";
+      $log_message .= "Data sent: " . $ct_data_str . "\n";
+      $log_message .= "Response: " . $calltouch . "\n";
+      //file_put_contents(__DIR__ . '/calltouch_log.txt', $log_message, FILE_APPEND | LOCK_EX);
+    
+    } catch (Exception $e) {
+      // Логируем ошибку
+      $log_message = "\n \n" . "request " . date("Y.m.d H:i") . "\n";
+      $log_message .= "Data sent: " . $ct_data_str . "\n";
+      $log_message .= "Error: " . $e->getMessage() . "\n";
+      file_put_contents(__DIR__ . '/calltouch_error_log.txt', $log_message, FILE_APPEND | LOCK_EX);
+    }
+    /* send calltouch */
+    
+    } catch (Exception $e) {
+      echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    }
   }
 
 }
@@ -178,11 +203,7 @@ function send_quiz_form() {
   $data[8] = ['Доп. комментарий', isset($_POST["quiz-step-8"]) ? $_POST["quiz-step-8"] : ''];
 
   $mail_from = get_field('mail-from', 'options');
-  $mail_to = get_field('mail-to', 'options');
   $mail->setFrom($mail_from, 'Лечение на брекетах');
-  foreach ($mail_to as $item) {
-    $mail->addAddress($item['mail'], $item['mail']);
-  }
 
   $mail->isHTML(true);
   $subject = 'Квиз';
@@ -211,64 +232,93 @@ function send_quiz_form() {
       }
   }
 
-  try {
-    $mail->send();
-    echo 'ok';
-	
-	/* send calltouch */
-	try {
-		$ct_site_id = '68946'; // ID сайта Calltouch
-		$call_value = $_COOKIE['_ct_session_id'];
-		if (isset($_POST['call_value'])) {
-			$call_value = $_POST['call_value'];
-		}
-		$ct_data = array(
-			'subject'       =>   $subject,
-			'fio'           =>   isset($_POST['quiz-step-9-name']) ? $_POST['quiz-step-9-name'] : '',
-			'phoneNumber'   =>   isset($_POST['quiz-step-9-phone']) ? $_POST['quiz-step-9-phone'] : '',
-			'requestUrl'    =>   $_SERVER['HTTP_REFERER'],
-			'sessionId'     =>   $call_value
-		);
-		$ct_data_str = http_build_query($ct_data);
-		 
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, "https://api.calltouch.ru/calls-service/RestAPI/requests/$ct_site_id/register/");
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: application/x-www-form-urlencoded;charset=utf-8"));
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $ct_data_str);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		$calltouch = curl_exec($ch);
-		 
-		// Проверка на ошибку выполнения запроса
-		if (curl_errno($ch)) {
-			throw new Exception(curl_error($ch));
-		}
-		 
-		// Получение HTTP-кода ответа
-		$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		if ($http_code != 200) {
-			throw new Exception("HTTP response code: " . $http_code . ". Response: " . $calltouch);
-		}
-	 
-		curl_close($ch);
-	 
-		// Логируем успешный запрос
-		$log_message = "\n \n" . "request " . date("Y.m.d H:i") . "\n";
-		$log_message .= "Data sent: " . $ct_data_str . "\n";
-		$log_message .= "Response: " . $calltouch . "\n";
-		//file_put_contents(__DIR__ . '/calltouch_log.txt', $log_message, FILE_APPEND | LOCK_EX);
-	 
-	} catch (Exception $e) {
-		// Логируем ошибку
-		$log_message = "\n \n" . "request " . date("Y.m.d H:i") . "\n";
-		$log_message .= "Data sent: " . $ct_data_str . "\n";
-		$log_message .= "Error: " . $e->getMessage() . "\n";
-		file_put_contents(__DIR__ . '/calltouch_error_log.txt', $log_message, FILE_APPEND | LOCK_EX);
-	}
-	/* send calltouch */
-	
-  } catch (Exception $e) {
-    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+  // reCAPTCHA
+  $secretKey = '6LfTDSwqAAAAANVoCeGWaUIWrlr7xooEjCtBvjAj';
+  $token = $_POST['recaptchaResponse'];
+  $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$token");
+  $responseKeys = json_decode($response, true);
+  $score = $responseKeys["score"];
+
+  // Если потенциальный бот то отправляем на отдельный email без calltouch
+  if (intval($responseKeys["success"]) !== 1 && $score < 0.5) {
+      $mail->addAddress('nikitach05@yandex.ru', 'nikitach05@yandex.ru');
+      $mail->addAddress('kolyan45495@gmail.com', 'kolyan45495@gmail.com');
+
+      try {
+        $mail->send();
+        echo 'ok';
+      } catch (Exception $e) {
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+      }
+      
+      return;
+  } else {
+  
+    $mail_to = get_field('mail-to', 'options');
+    foreach ($mail_to as $item) {
+      $mail->addAddress($item['mail'], $item['mail']);
+    }
+
+    try {
+      $mail->send();
+      echo 'ok';
+    
+    /* send calltouch */
+    try {
+      $ct_site_id = '68946'; // ID сайта Calltouch
+      $call_value = $_COOKIE['_ct_session_id'];
+      if (isset($_POST['call_value'])) {
+        $call_value = $_POST['call_value'];
+      }
+      $ct_data = array(
+        'subject'       =>   $subject,
+        'fio'           =>   isset($_POST['quiz-step-9-name']) ? $_POST['quiz-step-9-name'] : '',
+        'phoneNumber'   =>   isset($_POST['quiz-step-9-phone']) ? $_POST['quiz-step-9-phone'] : '',
+        'tags'			=>	 'лечение-на-брекетах.рф',
+        'requestUrl'    =>   $_SERVER['HTTP_REFERER'],
+        'sessionId'     =>   $call_value
+      );
+      $ct_data_str = http_build_query($ct_data);
+      
+      $ch = curl_init();
+      curl_setopt($ch, CURLOPT_URL, "https://api.calltouch.ru/calls-service/RestAPI/requests/$ct_site_id/register/");
+      curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: application/x-www-form-urlencoded;charset=utf-8"));
+      curl_setopt($ch, CURLOPT_POST, 1);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $ct_data_str);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      $calltouch = curl_exec($ch);
+      
+      // Проверка на ошибку выполнения запроса
+      if (curl_errno($ch)) {
+        throw new Exception(curl_error($ch));
+      }
+      
+      // Получение HTTP-кода ответа
+      $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+      if ($http_code != 200) {
+        throw new Exception("HTTP response code: " . $http_code . ". Response: " . $calltouch);
+      }
+    
+      curl_close($ch);
+    
+      // Логируем успешный запрос
+      $log_message = "\n \n" . "request " . date("Y.m.d H:i") . "\n";
+      $log_message .= "Data sent: " . $ct_data_str . "\n";
+      $log_message .= "Response: " . $calltouch . "\n";
+      //file_put_contents(__DIR__ . '/calltouch_log.txt', $log_message, FILE_APPEND | LOCK_EX);
+    
+    } catch (Exception $e) {
+      // Логируем ошибку
+      $log_message = "\n \n" . "request " . date("Y.m.d H:i") . "\n";
+      $log_message .= "Data sent: " . $ct_data_str . "\n";
+      $log_message .= "Error: " . $e->getMessage() . "\n";
+      file_put_contents(__DIR__ . '/calltouch_error_log.txt', $log_message, FILE_APPEND | LOCK_EX);
+    }
+    /* send calltouch */
+    
+    } catch (Exception $e) {
+      echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    }
   }
 
 }

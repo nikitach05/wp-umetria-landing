@@ -29,6 +29,20 @@
 	<noscript><div><img src="https://mc.yandex.ru/watch/97788233" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 	<!-- /Yandex.Metrika counter -->
 
+	<script src="https://www.google.com/recaptcha/api.js?render=6LfTDSwqAAAAAPqECpdZlsW3d_ZcSkmLohNxxwC8"></script>
+	<script>
+		grecaptcha.ready(function() {
+			grecaptcha.execute('6LfTDSwqAAAAAPqECpdZlsW3d_ZcSkmLohNxxwC8', {action: 'homepage'}).then(function(token) {
+				const recaptchaFields = document.querySelectorAll('.recaptcha-response');
+				if (recaptchaFields) {
+					recaptchaFields.forEach(field => {
+						field.value = token;
+					});
+				}
+			});
+		});
+	</script>
+
 </head>
 <body>
 

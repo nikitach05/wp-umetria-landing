@@ -23,6 +23,7 @@
                 <div class="modal-order__subtitle">Закажите звонок, и мы перезвоним Вам!</div>
 
                 <form class="modal-order__form order-form">
+                    <input type="hidden" name="recaptchaResponse" class="recaptcha-response">
                     <input type="hidden" name="form" value="Обратный звонок">
                     
                     <div class="order-form__title">Звонок бесплатный</div>
@@ -57,6 +58,7 @@
                 <div class="modal-order__subtitle">Закажите звонок, и мы перезвоним Вам!</div>
 
                 <form class="modal-order__form order-form">
+                    <input type="hidden" name="recaptchaResponse" class="recaptcha-response">
                     <input type="hidden" name="form" value="Обратный звонок">
                     
                     <div class="order-form__title">Звонок бесплатный</div>
