@@ -28,8 +28,15 @@ async function sendForm(formData) {
 
 		ym(97788233,'reachGoal','submit');
 
+		// amoCRM
+		let response = await fetch('/amo/amo.php', {
+			method: 'POST',
+			body: formData
+		});
+
 		document.querySelector('#modal-success').classList.add('modal--opened');
 		
+		// Clear input data
 		document.querySelectorAll('input[type="text"], input[type="tel"]').forEach(input => input.value = '');
 	}
 }
@@ -55,8 +62,11 @@ async function sendQuizForm(formData) {
 		body: formData
 	});
 	let result = await response.text();
+	result = JSON.parse(result);
 	
-	if (result == 'ok0' || result == '0') {
+	console.log(result);
+	
+	if (result.status == 'success') {
 
 		const quizItems = document.querySelectorAll('.quiz__form-item');
 		quizItems.forEach(item => item.classList.remove('active'));
@@ -67,7 +77,15 @@ async function sendQuizForm(formData) {
 		}
 		
 		ym(97788233,'reachGoal','submit');
+
+		// amoCRM
+		formData.set('file', result.file);
+		let response = await fetch('/amo/amo.php', {
+			method: 'POST',
+			body: formData
+		});
 		
+		// Clear input data
 		document.querySelectorAll('input[type="text"], input[type="tel"]').forEach(input => input.value = '');
 	}
 }

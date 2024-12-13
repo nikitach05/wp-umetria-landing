@@ -4,6 +4,10 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
+use AmoCRM\Client\AmoCRMApiClient;
+use AmoCRM\Client\LongLivedAccessToken;
+use AmoCRM\OAuth2\Client\Provider\AmoCRM;
+
 // Load Composer's autoloader
 //require '/OpenServer/domains/umetria-landing/vendor/autoload.php';
 require '/var/www/www-root/data/www/xn-----7kcbeuaaea0a4ad4ad5cxb5cwa.xn--p1ai/vendor/autoload.php';
@@ -222,12 +226,14 @@ function send_quiz_form() {
   $mail->Body = $body;
 
   // Files
+  $file_path = '';
   $allowedFormats = array('jpg', 'jpeg', 'png', 'heic');
   if (!empty($_FILES['quiz-step-7']['name'][0])) {
       for ($i = 0; $i < count($_FILES['quiz-step-7']['tmp_name']); $i++) {
           $fileExtension = pathinfo($_FILES['quiz-step-7']['name'][$i], PATHINFO_EXTENSION);
           if (in_array(strtolower($fileExtension), $allowedFormats)) {
               $mail->addAttachment($_FILES['quiz-step-7']['tmp_name'][$i], $_FILES['quiz-step-7']['name'][$i]);
+              $file_path = $_FILES['quiz-step-7']['tmp_name'];
           }
       }
   }
@@ -261,7 +267,33 @@ function send_quiz_form() {
 
     try {
       $mail->send();
-      echo 'ok';
+
+      $response = ['status' => 'success', 'file' => ''];
+
+      // amoCRM
+      $accessToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjQxMTJmNzk0OGNiYjExMjY3ZjkyMGEwOWFlNzg2NDgxNjg5ZTRkMzM0NjRiNjc2NTE0OGRlY2VmZWZkZWFmOGFlMmU5NDU3M2M1M2ZiN2EwIn0.eyJhdWQiOiIzMmZkZjhjYi0xNTM1LTQ0YWItOGFmOS0wMzAzNmQwMjYxZjYiLCJqdGkiOiI0MTEyZjc5NDhjYmIxMTI2N2Y5MjBhMDlhZTc4NjQ4MTY4OWU0ZDMzNDY0YjY3NjUxNDhkZWNlZmVmZGVhZjhhZTJlOTQ1NzNjNTNmYjdhMCIsImlhdCI6MTczNDA5OTYxOCwibmJmIjoxNzM0MDk5NjE4LCJleHAiOjE4ODI5MTUyMDAsInN1YiI6IjExNzkxMTM4IiwiZ3JhbnRfdHlwZSI6IiIsImFjY291bnRfaWQiOjMyMDczOTI2LCJiYXNlX2RvbWFpbiI6ImFtb2NybS5ydSIsInZlcnNpb24iOjIsInNjb3BlcyI6WyJjcm0iLCJmaWxlcyIsImZpbGVzX2RlbGV0ZSIsIm5vdGlmaWNhdGlvbnMiLCJwdXNoX25vdGlmaWNhdGlvbnMiXSwiaGFzaF91dWlkIjoiNjRlOTczYzktNDk1My00Y2UxLWEwNjMtNDhjM2JkZDFkOTYzIiwiYXBpX2RvbWFpbiI6ImFwaS1iLmFtb2NybS5ydSJ9.kIrxduqVF8srXJawplw8HnO8bKhjCMZnVJv7oeNAOwHQ2y_yv_R0X8u9JHDMDwTGd71X8wUTWMRnlt3iLqjMD6YbZuQ6aaD6hw23hLJQykHVQMKYjqDLe0tdKFqTEo-yDj0mjMDT5vqPSP0iWcr70s8VR4vKbNV3DX1LoiAexFa3xvBR6IT0CORDOshUoiEcEdIRkO105SMqFfEIwaKrPHbz2f9TSdFnoFdwCdnNIWxPkF-cL8EPOEOntMJH-5i8bzqqRixqGagVPjhrYAFEka4BpYHNTWwk7nomfgnLEUBXDn4Hw7YAzloRvHwVb_Xgurt4f7E4D0_kyZuM9VmNTg';
+
+      $apiClient = new AmoCRMApiClient();
+      $longLivedAccessToken = new LongLivedAccessToken($accessToken);
+      $apiClient->setAccessToken($longLivedAccessToken)->setAccountBaseDomain('umetria.amocrm.ru');
+
+      // Загрузка файла
+      // Создаем объект FileUploadModel
+      $fileUploadModel = new \AmoCRM\Models\Files\FileUploadModel();
+      $fileUploadModel->setName($_FILES['quiz-step-7']['name'][0]);
+      $fileUploadModel->setLocalPath($_FILES['quiz-step-7']['tmp_name'][0]);
+
+      // Сохранение файла в amoCRM
+      $fileResponse = $apiClient->files()->uploadOne($fileUploadModel);
+
+      // Получаем ID загруженного файла
+      $fileId = $fileResponse->getUuid();
+
+      if (!empty($fileId)) {
+        $response['file'] = $fileId;
+      }
+
+      print(json_encode($response));
     
     /* send calltouch */
     try {
@@ -321,6 +353,7 @@ function send_quiz_form() {
     }
   }
 
+  wp_die();
 }
 
 // allow SVG uploads
