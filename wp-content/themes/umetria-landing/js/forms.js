@@ -109,6 +109,13 @@ function validate(fields) {
 				input.classList.remove('error');
 			}
 		}
+		if (input.type == 'checkbox') {
+			input.parentNode.querySelector('.checkbox-field__box').classList.toggle('error', !input.checked);
+
+			if (input.parentNode.querySelector('.checkbox-field__box').classList.contains('error')) {
+				state = false;
+			}
+		}
 	});
 	return state;
 }
